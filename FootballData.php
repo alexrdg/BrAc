@@ -45,6 +45,21 @@ class FootballData
     }
 
     /**
+     * Function returns all soccer seasons
+     *
+     * @param Integer $id
+     * @return \Soccerseason object
+     */
+    public function getSoccerSeason() {
+        $resource = 'soccerseasons/';
+        $response = file_get_contents($this->baseUri . $resource, false,
+            stream_context_create($this->reqPrefs));
+        $result = json_decode($response);
+
+        return new Soccerseason($result);
+    }
+
+    /**
      * Function returns all available fixtures for a given date range.
      *
      * @param DateString 'Y-m-d' $start

@@ -5,6 +5,7 @@
  * Date: 17/10/2016
  * Time: 17:39
  */
+
 function wpdocs_register_my_custom_menu_page(){
     add_menu_page(
         __( 'Custom Menu Title', 'textdomain' ),
@@ -25,9 +26,14 @@ function my_custom_menu_page(){
     <h1>Hello World !</h1><br>
     <h2>Choose your league</h2>
     <select>
-        <option value="">test</option>
-        <option value="">test2</option>
-        <option value="">test3</option>
+        <?php
+            $api = new FootballData();
+        var_dump($api);
+            // fetch and dump summary data for premier league' season 2015/16
+            $soccerseason = $api->getSoccerSeason();
+            foreach ($soccerseason->payload as $fixture) { ?>
+            <option value=""><?php echo $fixture->caption; ?></option>
+        <?php } ?>
     </select>
 <?php
 }
