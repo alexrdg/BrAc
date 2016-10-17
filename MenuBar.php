@@ -9,7 +9,7 @@
 function wpdocs_register_my_custom_menu_page(){
     add_menu_page(
         __( 'Custom Menu Title', 'textdomain' ),
-        'custom menu',
+        'BrAc',
         'manage_options',
         'custompage',
         'my_custom_menu_page',
@@ -28,7 +28,6 @@ function my_custom_menu_page(){
     <select>
         <?php
             $api = new FootballData();
-        var_dump($api);
             // fetch and dump summary data for premier league' season 2015/16
             $soccerseason = $api->getSoccerSeason();
             foreach ($soccerseason->payload as $fixture) { ?>

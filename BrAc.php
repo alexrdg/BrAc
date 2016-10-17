@@ -17,9 +17,12 @@ add_action( 'admin_menu', 'wpdocs_register_my_custom_menu_page' );
 add_filter('wp_head','add_view');
 function add_view() {
     $api = new FootballData();
-    // fetch and dump summary data for premier league' season 2015/16
-    $soccerseason = $api->getSoccerseasonById(398);
     ?>
+    <div style="margin-top: 50px;">
+        <?php
+        $soccerseason = $api->getFixturesForDateRange('2016-10-01',get_the_date('Y-m-d'));
+        ?>
+    </div>
     <link rel="stylesheet" href="style/style.css">
     <div class="container">
         <table style="margin-top: 20px;">
@@ -27,7 +30,7 @@ function add_view() {
                 <td style="text-align: center;">A DOMICILE</td>
                 <td style="text-align: center;">A L'EXTERIEUR</td>
             </tr>
-            <?php foreach ($soccerseason->getFixturesByMatchday(1) as $fixture) { ?>
+            <?php foreach ($soccerseason->fixtures as $fixture) { ?>
                 <tr>
                     <td style="text-align: center;"><?php echo $fixture->homeTeamName; ?><br>
                         <?php echo $fixture->result->goalsHomeTeam; ?>
@@ -36,7 +39,7 @@ function add_view() {
                         <?php echo $fixture->result->goalsAwayTeam; ?>
                     </td>
                 </tr>
-            <?php } ?>
+            <?php }?>
         </table>
     </div>
     <?php
