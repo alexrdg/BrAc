@@ -21,5 +21,13 @@ add_action( 'admin_menu', 'wpdocs_register_my_custom_menu_page' );
  * Display a custom menu page
  */
 function my_custom_menu_page(){
-    esc_html_e( 'Hello World !', 'textdomain' );
+    ?>
+    <h1>Hello World !</h1><br>
+    <h2>Choose your league</h2>
+    <select>
+        <option value="">test</option>
+        <option value="">test2</option>
+        <option value="">test3</option>
+    </select>
+<?php
 }
