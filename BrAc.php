@@ -14,4 +14,15 @@ require_once 'FootballData.php';
 $api = new FootballData();
 // fetch and dump summary data for premier league' season 2015/16
 $soccerseason = $api->getSoccerseasonById(398);
-var_dump($soccerseason);
+
+foreach ($soccerseason->getFixturesByMatchday(1) as $fixture) { ?>
+    <tr>
+        <td><?php echo $fixture->homeTeamName; ?></td>
+        <td>-</td>
+        <td><?php echo $fixture->awayTeamName; ?></td>
+        <td><?php echo $fixture->result->goalsHomeTeam; ?></td>
+        <td>:</td>
+        <td><?php echo $fixture->result->goalsAwayTeam; ?></td>
+    </tr>
+<?php }
+
