@@ -20,7 +20,11 @@ function add_view() {
     ?>
     <div style="margin-top: 50px;">
         <?php
-        $soccerseason = $api->getFixturesForDateRange('2016-10-01',get_the_date('Y-m-d'));
+        $date = Date('Y-m-d');
+        list($Y,$m,$d)=explode('-',$date);
+        $dateDec = Date('Y-m-d', mktime(0,0,0,$m,$d-7,$Y));
+        print_r('Date between '.$dateDec.' & ' .$date);
+        $soccerseason = $api->getFixturesForDateRange($dateDec,$date);
         ?>
     </div>
     <link rel="stylesheet" href="style/style.css">
