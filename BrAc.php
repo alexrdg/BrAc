@@ -10,10 +10,9 @@ License:
 */
 require_once 'Team.php';
 require_once 'FootballData.php';
-?>
+require_once 'MenuBar.php';
 
-<?php
-
+add_action( 'admin_menu', 'wpdocs_register_my_custom_menu_page' );
 
 add_filter('wp_head','add_view');
 function add_view() {
