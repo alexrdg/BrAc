@@ -31,15 +31,18 @@ function add_view() {
     <div class="container">
         <table style="margin-top: 20px;">
             <tr>
-                <td style="text-align: center;">A DOMICILE</td>
-                <td style="text-align: center;">A L'EXTERIEUR</td>
+                <td style="text-align: center;">Home</td>
+                <td style="text-align: center;">Date</td>
+                <td style="text-align: center;">Visitors</td>
             </tr>
-            <?php foreach ($fixtureMatch->fixtures as $fixture) { ?>
+            <?php foreach ($fixtureMatch->fixtures as $fixture) {
+                $dateFormated = explode('T', $fixture->date);?>
                 <tr>
-                    <td style="text-align: center;"><?php echo $fixture->homeTeamName; ?><br>
+                    <td style="text-align: center;"><?= $fixture->homeTeamName; ?><br>
                         <?php echo $fixture->result->goalsHomeTeam; ?>
                     </td>
-                    <td style="text-align: center;"><?php echo $fixture->awayTeamName; ?><br>
+                    <td style="text-align: center;"><?= $dateFormated[0]; ?></td>
+                    <td style="text-align: center;"><?= $fixture->awayTeamName; ?><br>
                         <?php echo $fixture->result->goalsAwayTeam; ?>
                     </td>
                 </tr>
@@ -48,3 +51,4 @@ function add_view() {
     </div>
     <?php
 }
+

@@ -25,14 +25,14 @@ function my_custom_menu_page(){
     $url = plugins_url();
     ?>
     <h1>Choose your league</h1>
-    <form method="post" action="">
+    <form method="post" name="leagueForm" action="">
         <select name="selectChoice">
             <?php
                 $api = new FootballData();
                 // fetch and dump summary data for premier league' season 2015/16
                 $soccerseason = $api->getSoccerSeason();
                 foreach ($soccerseason->payload as $fixture) { ?>
-                <option name="id" value="<?=$fixture->id;?>"><?php echo $fixture->caption; ?></option>
+                <option selected="<?= get_option('league_id'); ?>" name="id" value="<?=$fixture->id;?>"><?php echo $fixture->caption; ?></option>
             <?php } ;?>
         </select>
         <button type="submit" name="action">Submit</button>
