@@ -24,9 +24,8 @@ add_action( 'admin_menu', 'wpdocs_register_my_custom_menu_page' );
 function my_custom_menu_page(){
     $url = plugins_url();
     ?>
-    <h1>Hello World !</h1><br>
-    <h2>Choose your league</h2>
-    <form method="post" name="leagueForm" action=""  id="leagueChooser">
+    <h1>Choose your league</h1>
+    <form method="post" action="">
         <select name="selectChoice">
             <?php
                 $api = new FootballData();
@@ -41,5 +40,6 @@ function my_custom_menu_page(){
 <?php
     if(isset($_POST['selectChoice'])) {
         update_option('league_id',$_POST['selectChoice']);
+        echo '<h3>Sucessfully sent !</h3>';
     }
 }
