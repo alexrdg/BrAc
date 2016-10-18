@@ -20,11 +20,12 @@ function add_view() {
     ?>
     <div style="margin-top: 50px;">
         <?php
-        $date = Date('Y-m-d');
-        list($Y,$m,$d)=explode('-',$date);
-        $dateDec = Date('Y-m-d', mktime(0,0,0,$m,$d-7,$Y));
-        print_r('Date between '.$dateDec.' & ' .$date);
-        $soccerseason = $api->getFixturesForDateRange($dateDec,$date);
+            $date = Date('Y-m-d');
+            list($Y,$m,$d)=explode('-',$date);
+            $dateDec = Date('Y-m-d', mktime(0,0,0,$m,$d-7,$Y));
+            print_r('Date between '.$dateDec.' & ' .$date);
+            $soccerseason = $api->getFixturesForDateRange($dateDec,$date);
+            // $competition = $api->getSoccerSeason();
         ?>
     </div>
     <link rel="stylesheet" href="style/style.css">

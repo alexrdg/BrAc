@@ -31,8 +31,9 @@ function my_custom_menu_page(){
             // fetch and dump summary data for premier league' season 2015/16
             $soccerseason = $api->getSoccerSeason();
             foreach ($soccerseason->payload as $fixture) { ?>
-            <option value=""><?php echo $fixture->caption; ?></option>
+            <option value="<?=$fixture->id;?>"><?php echo $fixture->caption; ?></option>
         <?php } ?>
     </select>
+    <button type="button">Submit</button>
 <?php
 }
