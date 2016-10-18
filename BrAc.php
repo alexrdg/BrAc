@@ -70,7 +70,7 @@ class wpb_widget extends WP_Widget {
                             <?php echo __($fixture->result->goalsAwayTeam,'wpb_BrAc_domain'); ?>
                         </td>
                     </tr>
-                <?php }?>
+                <?php } ?>
             </table>
         </div>
         <?php

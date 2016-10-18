@@ -24,13 +24,14 @@ if (is_admin()) {
     function my_custom_menu_page(){ ?>
         <h1>FIRST, ENTER YOUR TOKEN</h1>
         <i>can be generated <a href="http://api.football-data.org/register">here</a></i><br>
-        <form method="post" name="" action="">
+        <form method="post" name="" action="" onsubmit="return confirm('Do you really want to update the Token ?');">
             <input type="text" name="Token" placeholder="Enter Token here"></input>
             <button type="submit" name="action">Submit</button>
             <?php if (!empty(get_option('token_id'))){
             echo '<br>Your Token is: '.get_option('token_id');
             }?>
         </form>
+        <?php if (!empty(get_option('token_id'))) {?>
         <h1>Choose your league</h1>
         <form method="post" name="leagueForm" action="">
             <select name="selectChoice">
@@ -45,6 +46,7 @@ if (is_admin()) {
             <button type="submit" name="action">Submit</button>
         </form>
         <?php
+        }
         if(isset($_POST['selectChoice'])) {
             update_option('league_id',$_POST['selectChoice']);
             echo '<h3>League registered !</h3>';
