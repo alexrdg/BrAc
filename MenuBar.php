@@ -27,6 +27,9 @@ if (is_admin()) {
         <form method="post" name="" action="">
             <input type="text" name="Token" placeholder="Enter Token here"></input>
             <button type="submit" name="action">Submit</button>
+            <?php if (!empty(get_option('token_id'))){
+            echo '<br>Your Token is: '.get_option('token_id');
+            }?>
         </form>
         <h1>Choose your league</h1>
         <form method="post" name="leagueForm" action="">
@@ -44,7 +47,7 @@ if (is_admin()) {
         <?php
         if(isset($_POST['selectChoice'])) {
             update_option('league_id',$_POST['selectChoice']);
-            echo '<h3>League registered</h3>';
+            echo '<h3>League registered !</h3>';
         }
         if(isset($_POST['Token'])) {
             update_option('token_id',$_POST['Token']);
