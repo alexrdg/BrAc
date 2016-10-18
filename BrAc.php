@@ -46,9 +46,9 @@ class wpb_widget extends WP_Widget {
         <div style="margin-top: 50px;">
             <?php
             $competition = get_option('league_id');
-            $competitionSelect = $api->getSoccerseasonById($competition);
-            $dayOfGame = $competitionSelect->payload->currentMatchday;
-            $fixtureMatch = $api->getFixturesForLeagueAndMatch($dayOfGame);
+            $competition_select = $api->get_soccerseason_by_id($competition);
+            $day_of_game = $competition_select->payload->currentMatchday;
+            $fixture_match = $api->get_fixtures_for_league_and_match($day_of_game);
             ?>
         </div>
         <link rel="stylesheet" href="style/style.css">
@@ -59,13 +59,13 @@ class wpb_widget extends WP_Widget {
                     <td style="text-align: center;">Date</td>
                     <td style="text-align: center;">Visitors</td>
                 </tr>
-                <?php foreach ($fixtureMatch->fixtures as $fixture) {
-                    $dateFormated = explode('T', $fixture->date);?>
+                <?php foreach ($fixture_match->fixtures as $fixture) {
+                    $date_formated = explode('T', $fixture->date);?>
                     <tr>
                         <td style="text-align: center;"><? echo __($fixture->homeTeamName,'wpb_BrAc_domain'); ?><br>
                             <?php echo __($fixture->result->goalsHomeTeam,'wpb_BrAc_domain'); ?>
                         </td>
-                        <td style="text-align: center;"><? echo __($dateFormated[0],'wpb_BrAc_domain'); ?></td>
+                        <td style="text-align: center;"><? echo __($date_formated[0],'wpb_BrAc_domain'); ?></td>
                         <td style="text-align: center;"><? echo __($fixture->awayTeamName,'wpb_BrAc_domain'); ?><br>
                             <?php echo __($fixture->result->goalsAwayTeam,'wpb_BrAc_domain'); ?>
                         </td>

@@ -12,8 +12,8 @@ class FootballData
 {
 
     public $config;
-    public $baseUri;
-    public $reqPrefs = array();
+    public $base_uri;
+    public $req_prefs = array();
 
     public function __construct() {
         $this->config = get_option('token_id');
@@ -23,10 +23,10 @@ class FootballData
             exit('Get your API-Key first and edit config.ini');
         }
 
-        $this->baseUri = 'http://api.football-data.org/v1/';
+        $this->base_uri = 'http://api.football-data.org/v1/';
 
-        $this->reqPrefs['http']['method'] = 'GET';
-        $this->reqPrefs['http']['header'] = 'X-Auth-Token: ' . $this->config;
+        $this->req_prefs['http']['method'] = 'GET';
+        $this->req_prefs['http']['header'] = 'X-Auth-Token: ' . $this->config;
     }
 
     /**
@@ -35,10 +35,10 @@ class FootballData
      * @param Integer $id
      * @return \Soccerseason object
      */
-    public function getSoccerseasonById($id) {
+    public function get_soccerseason_by_id($id) {
         $resource = 'soccerseasons/' . $id;
-        $response = file_get_contents($this->baseUri . $resource, false,
-            stream_context_create($this->reqPrefs));
+        $response = file_get_contents($this->base_uri . $resource, false,
+            stream_context_create($this->req_prefs));
         $result = json_decode($response);
 
         return new Soccerseason($result);
@@ -50,10 +50,10 @@ class FootballData
      * @param Integer $id
      * @return \Soccerseason object
      */
-    public function getSoccerSeason() {
+    public function get_soccer_season() {
         $resource = 'soccerseasons/';
-        $response = file_get_contents($this->baseUri . $resource, false,
-            stream_context_create($this->reqPrefs));
+        $response = file_get_contents($this->base_uri . $resource, false,
+            stream_context_create($this->req_prefs));
         $result = json_decode($response);
 
         return new Soccerseason($result);
@@ -66,11 +66,11 @@ class FootballData
      * @param DateString 'Y-m-d' $end
      * @return array of fixture objects
      */
-    public function getFixturesForDateRange($start, $end) {
+    public function get_fixtures_for_date_range($start, $end) {
         $resource = 'fixtures/?timeFrameStart=' . $start . '&timeFrameEnd=' . $end;
 
-        $response = file_get_contents($this->baseUri . $resource, false,
-            stream_context_create($this->reqPrefs));
+        $response = file_get_contents($this->base_uri . $resource, false,
+            stream_context_create($this->req_prefs));
 
         return json_decode($response);
     }
@@ -81,11 +81,11 @@ class FootballData
      * @param DateString 'Y-m-d' $end
      * @return array of fixture objects
      */
-    public function getFixturesForLeagueAndMatch($matchDay) {
-        $resource = '/competitions/'.get_option('league_id').'/fixtures?matchday='.$matchDay;
+    public function get_fixtures_for_league_and_match($match_day) {
+        $resource = '/competitions/'.get_option('league_id').'/fixtures?matchday='.$match_day;
 
-        $response = file_get_contents($this->baseUri . $resource, false,
-            stream_context_create($this->reqPrefs));
+        $response = file_get_contents($this->base_uri . $resource, false,
+            stream_context_create($this->req_prefs));
 
         return json_decode($response);
     }
@@ -96,10 +96,10 @@ class FootballData
      * @param int $id
      * @return stdObject fixture
      */
-    public function getFixtureById($id) {
+    public function get_fixture_by_id($id) {
         $resource = 'fixtures/' . $id;
-        $response = file_get_contents($this->baseUri . $resource, false,
-            stream_context_create($this->reqPrefs));
+        $response = file_get_contents($this->base_uri . $resource, false,
+            stream_context_create($this->req_prefs));
 
         return json_decode($response);
     }
@@ -110,10 +110,10 @@ class FootballData
      * @param int $id
      * @return stdObject team
      */
-    public function getTeamById($id) {
+    public function get_team_by_id($id) {
         $resource = 'teams/' . $id;
-        $response = file_get_contents($this->baseUri . $resource, false,
-            stream_context_create($this->reqPrefs));
+        $response = file_get_contents($this->base_uri . $resource, false,
+            stream_context_create($this->req_prefs));
 
         $result = json_decode($response);
 
@@ -126,10 +126,10 @@ class FootballData
      * @param string $keyword
      * @return list of team objects
      */
-    public function searchTeam($keyword) {
+    public function search_team($keyword) {
         $resource = 'teams/?name=' . $keyword;
-        $response = file_get_contents($this->baseUri . $resource, false,
-            stream_context_create($this->reqPrefs));
+        $response = file_get_contents($this->base_uri . $resource, false,
+            stream_context_create($this->req_prefs));
 
         return json_decode($response);
     }

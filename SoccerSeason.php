@@ -10,7 +10,7 @@ require_once 'FootballData.php';
 class SoccerSeason
 {
     public $config;
-    public $reqPrefs = array();
+    public $req_prefs = array();
     public $payload;
 
     /**
@@ -23,8 +23,8 @@ class SoccerSeason
         $this->payload = $payload;
         $config = get_option('token_id');
 
-        $this->reqPrefs['http']['method'] = 'GET';
-        $this->reqPrefs['http']['header'] = 'X-Auth-Token: ' . $config;
+        $this->req_prefs['http']['method'] = 'GET';
+        $this->req_prefs['http']['header'] = 'X-Auth-Token: ' . $config;
     }
 
     /**
@@ -32,9 +32,9 @@ class SoccerSeason
      *
      * @return array of fixture objects
      */
-    public function getAllFixtures() {
+    public function get_all_fixtures() {
         $uri = $this->payload->_links->fixtures->href;
-        $response = file_get_contents($uri, false, stream_context_create($this->reqPrefs));
+        $response = file_get_contents($uri, false, stream_context_create($this->req_prefs));
 
         return json_decode($response);
     }
@@ -45,10 +45,10 @@ class SoccerSeason
      * @param type $matchday
      * @return array of fixture objects
      */
-    public function getFixturesByMatchday($matchday = 1) {
+    public function get_fixtures_by_matchday($matchday = 1) {
         $uri = $this->payload->_links->fixtures->href . '/?matchday=' . $matchday;
 
-        $response = file_get_contents($uri, false, stream_context_create($this->reqPrefs));
+        $response = file_get_contents($uri, false, stream_context_create($this->req_prefs));
         $response = json_decode($response);
 
         return $response->fixtures;
@@ -59,9 +59,9 @@ class SoccerSeason
      *
      * @return array of team objects
      */
-    public function getTeams() {
+    public function get_teams() {
         $uri = $this->payload->_links->teams->href;
-        $response = file_get_contents($uri, false, stream_context_create($this->reqPrefs));
+        $response = file_get_contents($uri, false, stream_context_create($this->req_prefs));
         $response = json_decode($response);
 
         return $response->teams;
@@ -72,9 +72,9 @@ class SoccerSeason
      *
      * @return object leagueTable
      */
-    public function getLeagueTable() {
+    public function get_league_table() {
         $uri = $this->payload->_links->leagueTable->href;
-        $response = file_get_contents($uri, false, stream_context_create($this->reqPrefs));
+        $response = file_get_contents($uri, false, stream_context_create($this->req_prefs));
 
         return json_decode($response);
     }

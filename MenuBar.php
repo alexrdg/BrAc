@@ -37,7 +37,7 @@ if (is_admin()) {
                 <?php
                 $api = new FootballData();
                 // fetch and dump summary data for premier league' season 2015/16
-                $soccerseason = $api->getSoccerSeason();
+                $soccerseason = $api->get_soccer_season();
                 foreach ($soccerseason->payload as $fixture) { ?>
                     <option name="id" value="<? echo $fixture->id;?>"><?php echo $fixture->caption; ?></option>
                 <?php } ;?>

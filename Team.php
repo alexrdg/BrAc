@@ -9,7 +9,7 @@
 class Team
 {
     public $config;
-    public $reqPrefs = array();
+    public $req_prefs = array();
     public $_payload;
 
     /**
@@ -21,8 +21,8 @@ class Team
         $this->_payload = $payload;
         $config = get_option('token_id');
 
-        $this->reqPrefs['http']['method'] = 'GET';
-        $this->reqPrefs['http']['header'] = 'X-Auth-Token: ' . $config;
+        $this->req_prefs['http']['method'] = 'GET';
+        $this->req_prefs['http']['header'] = 'X-Auth-Token: ' . $config;
     }
 
     /**
@@ -31,9 +31,9 @@ class Team
      * @param string $venue
      * @return array of stdObjects representing fixtures
      */
-    public function getFixtures($venue = "", $timeFrame = "") {
-        $uri = $this->_payload->_links->fixtures->href . '/?venue=' . $venue . '&timeFrame=' . $timeFrame;
-        $response = file_get_contents($uri, false, stream_context_create($this->reqPrefs));
+    public function get_fixtures($venue = "", $time_frame = "") {
+        $uri = $this->_payload->_links->fixtures->href . '/?venue=' . $venue . '&timeFrame=' . $time_frame;
+        $response = file_get_contents($uri, false, stream_context_create($this->req_prefs));
 
         return json_decode($response);
     }
@@ -43,10 +43,10 @@ class Team
      *
      * @return array of fixture objects
      */
-    public function getPlayers() {
+    public function get_players() {
         $uri = $this->_payload->_links->players->href;
 
-        $response = file_get_contents($uri, false, stream_context_create($this->reqPrefs));
+        $response = file_get_contents($uri, false, stream_context_create($this->req_prefs));
         $response = json_decode($response);
 
         return $response->players;
