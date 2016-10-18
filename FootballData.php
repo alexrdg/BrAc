@@ -16,17 +16,17 @@ class FootballData
     public $reqPrefs = array();
 
     public function __construct() {
-        $this->config = parse_ini_file('config.ini', true);
+        $this->config = get_option('token_id');
 
         // some lame hint for the impatient
-        if($this->config['authToken'] == 'YOUR_AUTH_TOKEN' || !isset($this->config['authToken'])) {
+        if($this->config == 'YOUR_AUTH_TOKEN' || !isset($this->config)) {
             exit('Get your API-Key first and edit config.ini');
         }
 
-        $this->baseUri = $this->config['baseUri'];
+        $this->baseUri = 'http://api.football-data.org/v1/';
 
         $this->reqPrefs['http']['method'] = 'GET';
-        $this->reqPrefs['http']['header'] = 'X-Auth-Token: ' . $this->config['authToken'];
+        $this->reqPrefs['http']['header'] = 'X-Auth-Token: ' . $this->config;
     }
 
     /**

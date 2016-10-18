@@ -98,8 +98,7 @@ class wpb_widget extends WP_Widget {
         $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
         return $instance;
     }
-} // Class wpb_widget ends here
-// Register and load the widget
+}
 function wpb_load_widget() {
     register_widget( 'wpb_widget' );
 }

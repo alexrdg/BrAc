@@ -21,10 +21,10 @@ class SoccerSeason
      */
     public function __construct($payload) {
         $this->payload = $payload;
-        $config = parse_ini_file('config.ini', true);
+        $config = get_option('token_id');
 
         $this->reqPrefs['http']['method'] = 'GET';
-        $this->reqPrefs['http']['header'] = 'X-Auth-Token: ' . $config['authToken'];
+        $this->reqPrefs['http']['header'] = 'X-Auth-Token: ' . $config;
     }
 
     /**
