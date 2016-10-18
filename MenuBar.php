@@ -21,9 +21,7 @@ add_action( 'admin_menu', 'wpdocs_register_my_custom_menu_page' );
 /**
  * Display a custom menu page
  */
-function my_custom_menu_page(){
-    $url = plugins_url();
-    ?>
+function my_custom_menu_page(){ ?>
     <h1>Choose your league</h1>
     <form method="post" name="leagueForm" action="">
         <select name="selectChoice">
@@ -32,7 +30,7 @@ function my_custom_menu_page(){
                 // fetch and dump summary data for premier league' season 2015/16
                 $soccerseason = $api->getSoccerSeason();
                 foreach ($soccerseason->payload as $fixture) { ?>
-                <option selected="<?= get_option('league_id'); ?>" name="id" value="<?=$fixture->id;?>"><?php echo $fixture->caption; ?></option>
+                <option name="id" value="<? echo $fixture->id;?>"><?php echo $fixture->caption; ?></option>
             <?php } ;?>
         </select>
         <button type="submit" name="action">Submit</button>
@@ -43,3 +41,6 @@ function my_custom_menu_page(){
         echo '<h3>Sucessfully sent !</h3>';
     }
 }
+
+
+
