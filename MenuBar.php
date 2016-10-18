@@ -22,18 +22,24 @@ add_action( 'admin_menu', 'wpdocs_register_my_custom_menu_page' );
  * Display a custom menu page
  */
 function my_custom_menu_page(){
+    $url = plugins_url();
     ?>
     <h1>Hello World !</h1><br>
     <h2>Choose your league</h2>
-    <select>
-        <?php
-            $api = new FootballData();
-            // fetch and dump summary data for premier league' season 2015/16
-            $soccerseason = $api->getSoccerSeason();
-            foreach ($soccerseason->payload as $fixture) { ?>
-            <option value="<?=$fixture->id;?>"><?php echo $fixture->caption; ?></option>
-        <?php } ?>
-    </select>
-    <button type="button">Submit</button>
+    <form method="post" name="leagueForm" action=""  id="leagueChooser">
+        <select name="selectChoice">
+            <?php
+                $api = new FootballData();
+                // fetch and dump summary data for premier league' season 2015/16
+                $soccerseason = $api->getSoccerSeason();
+                foreach ($soccerseason->payload as $fixture) { ?>
+                <option name="id" value="<?=$fixture->id;?>"><?php echo $fixture->caption; ?></option>
+            <?php } ;?>
+        </select>
+        <button type="submit" name="action">Submit</button>
+    </form>
 <?php
+    if(isset($_POST['selectChoice'])) {
+        update_option('league_id',$_POST['selectChoice']);
+    }
 }

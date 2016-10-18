@@ -8,6 +8,7 @@ Author: alexRdg
 Author URI: http://www.alexrdg.com/
 License:
 */
+require_once 'SoccerSeason.php';
 require_once 'Team.php';
 require_once 'FootballData.php';
 require_once 'MenuBar.php';
@@ -20,12 +21,10 @@ function add_view() {
     ?>
     <div style="margin-top: 50px;">
         <?php
-            $date = Date('Y-m-d');
-            list($Y,$m,$d)=explode('-',$date);
-            $dateDec = Date('Y-m-d', mktime(0,0,0,$m,$d-7,$Y));
-            print_r('Date between '.$dateDec.' & ' .$date);
-            $soccerseason = $api->getFixturesForDateRange($dateDec,$date);
-            // $competition = $api->getSoccerSeason();
+            $competition = get_option('league_id');
+            $competitionSelect = $api->getSoccerseasonById($competition);
+            $dayOfGame = $competitionSelect->payload->currentMatchday;
+        $fixtureMatch = $api->getFixturesForLeagueAndMatch($dayOfGame);
         ?>
     </div>
     <link rel="stylesheet" href="style/style.css">
@@ -35,7 +34,7 @@ function add_view() {
                 <td style="text-align: center;">A DOMICILE</td>
                 <td style="text-align: center;">A L'EXTERIEUR</td>
             </tr>
-            <?php foreach ($soccerseason->fixtures as $fixture) { ?>
+            <?php foreach ($fixtureMatch->fixtures as $fixture) { ?>
                 <tr>
                     <td style="text-align: center;"><?php echo $fixture->homeTeamName; ?><br>
                         <?php echo $fixture->result->goalsHomeTeam; ?>

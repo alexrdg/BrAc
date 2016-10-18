@@ -6,6 +6,7 @@
  * Date: 17/10/2016
  * Time: 13:22
  */
+require_once 'FootballData.php';
 class SoccerSeason
 {
     public $config;
