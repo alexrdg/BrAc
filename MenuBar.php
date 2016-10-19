@@ -94,7 +94,7 @@ if (is_admin()) {
         }?>
         </form>
         <?php if (!empty(get_option('token_id'))) {?>
-            <h1>Choose your league</h1>
+            <h1 style="margin-top: 150px;">Choose your league</h1>
             <form method="post" name="leagueForm" action="">
                 <select name="selectChoice">
                     <?php
@@ -107,7 +107,7 @@ if (is_admin()) {
                 </select>
                 <button type="submit" name="action">Submit</button>
             </form>
-            <h1>Export results as CSV</h1>
+            <h1 style="margin-top: 150px;">Export results as CSV</h1>
             <form method="post" name="leagueForm" action="">
             <input type="hidden" name="action" value="download_zip">
                 <?php
