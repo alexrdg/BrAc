@@ -96,7 +96,6 @@ if (is_admin()) {
             }
             $zip = new ZipArchive;
             $filename = WP_PLUGIN_DIR.'/BrAc/export.zip';
-            var_dump($files_to_zip);
 
             $res = $zip->open($filename, ZipArchive::CREATE);
             if ($res === TRUE) {
@@ -105,6 +104,9 @@ if (is_admin()) {
                 }
                 $zip->close();
                 echo 'ok';
+                foreach ($files_to_zip as $f){
+                    unlink($f);
+                }
                 } else {
                     echo 'echec';
                 }
