@@ -31,9 +31,6 @@ if (is_admin()) {
 
 
     if (isset($_POST['export_league'])) {
-        header("Content-Type: application/zip");
-        header("Content-Disposition: attachment; filename=export.zip");
-        print readfile('export.zip');
         $i=0;
         $post_leagues = $_POST['export_league'];
         $api = new FootballData();
@@ -64,12 +61,17 @@ if (is_admin()) {
         $zip = new ZipArchive;
         $filename = WP_PLUGIN_DIR.'/BrAc/export.zip';
 
-        $res = $zip->open('export.zip',ZipArchive::CREATE);
+        $res = $zip->open($filename,ZipArchive::CREATE);
         if ($res === TRUE) {
             foreach ($files_to_zip as $f){
                 $zip->addFile($f);
             }
             $zip->close();
+            header("Content-Type: application/zip");
+            header("Content-Disposition: attachment; filename=export.zip");
+            header("Content-length: ".filesize($filename));
+            print readfile($filename);
+
             foreach ($files_to_zip as $f){
                 unlink($f);
             }
