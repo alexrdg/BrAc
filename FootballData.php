@@ -74,6 +74,7 @@ class FootballData
 
         return json_decode($response);
     }
+
     /**
      * Function returns all available fixtures for a given date range.
      *
@@ -83,6 +84,22 @@ class FootballData
      */
     public function get_fixtures_for_league_and_match($match_day) {
         $resource = '/competitions/'.get_option('league_id').'/fixtures?matchday='.$match_day;
+
+        $response = file_get_contents($this->base_uri . $resource, false,
+            stream_context_create($this->req_prefs));
+
+        return json_decode($response);
+    }
+
+    /**
+     * Function returns all available fixtures for a given date range.
+     *
+     * @param DateString 'Y-m-d' $start
+     * @param DateString 'Y-m-d' $end
+     * @return array of fixture objects
+     */
+    public function get_fixtures_for_export($league_id,$match_day) {
+        $resource = '/competitions/'.$league_id.'/fixtures?matchday='.$match_day;
 
         $response = file_get_contents($this->base_uri . $resource, false,
             stream_context_create($this->req_prefs));
