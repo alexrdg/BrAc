@@ -70,14 +70,13 @@ if (is_admin()) {
         if (isset($_POST['export_league'])) {
             $i=0;
             $post_leagues = $_POST['export_league'];
+            $api = new FootballData();
 
             foreach ( $post_leagues as $post_league ) {
-                $api = new FootballData();
                 $fp = fopen($i.'file.csv', 'w');
-                $competition = $post_league;
-                $competition_select = $api->get_soccerseason_by_id($competition);
+                $competition_select = $api->get_soccerseason_by_id($post_league);
                 $day_of_game = $competition_select->payload->currentMatchday;
-                $fixture_match = $api->get_fixtures_for_export($_POST['export_league'],$day_of_game);
+                $fixture_match = $api->get_fixtures_for_export($_POST['export_league'][$i], $day_of_game);
 
                 foreach ($fixture_match->fixtures as $fixture) {
                     $date_formated = explode('T', $fixture->date);
@@ -93,7 +92,6 @@ if (is_admin()) {
                 $i ++;
             }
         }
-
     }
 }
 
