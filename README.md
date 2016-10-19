@@ -7,6 +7,8 @@ Website: http://alexrdg.com.
 
 Github : https://github.com/alexrdg/BrAc
 
+If you want to add features or participate to the advance of projetc, you're welcome !
+
 # Installation:
 1. Activate the plugin.
 2. Enter your token generated at: http://api.football-data.org/register in the BrAc menu.
@@ -15,5 +17,8 @@ Github : https://github.com/alexrdg/BrAc
 5. Enjoy it with a Beer.
 
 # Exporting files
-1. In admin section, select in the checkbox the league(s) you want to export as CSV
+1. In admin section, select in the checkbox the league(s) you want to export as CSV.
 2. Submit it.
+3. Go to your downloads torrent
+4. Extract the file 
+5. Enjoy it with a Beer.
