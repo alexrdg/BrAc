@@ -41,7 +41,7 @@ if (is_admin()) {
                     $soccerseason = $api->get_soccer_season();
                     foreach ($soccerseason->payload as $fixture) { ?>
                         <option name="id" value="<? echo $fixture->id;?>"><?php echo $fixture->caption; ?></option>
-                    <?php } ;?>
+                    <?php } ?>
                 </select>
                 <button type="submit" name="action">Submit</button>
             </form>
@@ -58,7 +58,6 @@ if (is_admin()) {
 
         <?php
         }
-
         if(isset($_POST['selectChoice'])) {
             update_option('league_id',$_POST['selectChoice']);
             echo '<h3>League registered !</h3>';
@@ -72,15 +71,19 @@ if (is_admin()) {
             $post_leagues = $_POST['export_league'];
             $api = new FootballData();
 
+            $files_to_zip = array();
+
             foreach ( $post_leagues as $post_league ) {
-                $fp = fopen($i.'file.csv', 'w');
+                $fp = fopen(WP_PLUGIN_DIR.'/BrAc/'.$i.'file.csv', 'w');
+                $files_to_zip[] = WP_PLUGIN_DIR.'/BrAc/'.$i.'file.csv';
                 $competition_select = $api->get_soccerseason_by_id($post_league);
                 $day_of_game = $competition_select->payload->currentMatchday;
                 $fixture_match = $api->get_fixtures_for_export($_POST['export_league'][$i], $day_of_game);
 
                 foreach ($fixture_match->fixtures as $fixture) {
                     $date_formated = explode('T', $fixture->date);
-                    $list = array($fixture->homeTeamName,
+                    $list = array(
+                        $fixture->homeTeamName,
                         $fixture->result->goalsHomeTeam,
                         $date_formated[0],
                         $fixture->awayTeamName,
@@ -91,7 +94,20 @@ if (is_admin()) {
                 fclose($fp);
                 $i ++;
             }
+            $zip = new ZipArchive;
+            $filename = WP_PLUGIN_DIR.'/BrAc/export.zip';
+            var_dump($files_to_zip);
+
+            $res = $zip->open($filename, ZipArchive::CREATE);
+            if ($res === TRUE) {
+                foreach ($files_to_zip as $f){
+                    $zip->addFile($f);
+                }
+                $zip->close();
+                echo 'ok';
+                } else {
+                    echo 'echec';
+                }
         }
     }
 }
-
