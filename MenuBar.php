@@ -68,13 +68,14 @@ if (is_admin()) {
             }
             $zip->close();
             header("Content-Type: application/zip");
-            header("Content-Disposition: attachment; filename=export.zip");
+            header("Content-Disposition: attachment; filename=BrAc_Leagues_Export.zip");
             header("Content-length: ".filesize($filename));
             print readfile($filename);
 
             foreach ($files_to_zip as $f){
                 unlink($f);
             }
+            unlink($filename);
         }
 
     }
