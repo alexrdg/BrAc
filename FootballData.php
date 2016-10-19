@@ -99,7 +99,7 @@ class FootballData
      * @return array of fixture objects
      */
     public function get_fixtures_for_export($league_id,$match_day) {
-        $resource = '/competitions/'.$league_id.'/fixtures?matchday='.$match_day;
+        $resource = '/competitions/'.$league_id[0].'/fixtures?matchday='.$match_day;
 
         $response = file_get_contents($this->base_uri . $resource, false,
             stream_context_create($this->req_prefs));
