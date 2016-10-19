@@ -6,6 +6,7 @@
  * Time: 17:39
  */
 if (is_admin()) {
+    add_action( 'admin_menu', 'wpdocs_register_my_custom_menu_page' );
     function wpdocs_register_my_custom_menu_page(){
         add_menu_page(
             __( 'Custom Menu Title', 'textdomain' ),
@@ -16,7 +17,65 @@ if (is_admin()) {
             plugins_url( 'BrAc/img/picture.png' )
         );
     }
-    add_action( 'admin_menu', 'wpdocs_register_my_custom_menu_page' );
+
+    if(isset($_POST['selectChoice'])) {
+        update_option('league_id',$_POST['selectChoice']);
+        echo '<h3>League registered !</h3>';
+    }
+
+    if(isset($_POST['Token'])) {
+        update_option('token_id',$_POST['Token']);
+        echo '<h3>Token successfully sent</h3>'.get_option('token_id');
+    }
+
+
+
+    if (isset($_POST['export_league'])) {
+        header("Content-Type: application/zip");
+        header("Content-Disposition: attachment; filename=export.zip");
+        print readfile('export.zip');
+        $i=0;
+        $post_leagues = $_POST['export_league'];
+        $api = new FootballData();
+
+        $files_to_zip = array();
+
+        foreach ( $post_leagues as $post_league ) {
+            $fp = fopen(WP_PLUGIN_DIR.'/BrAc/'.$i.'file.csv', 'w');
+            $files_to_zip[] = WP_PLUGIN_DIR.'/BrAc/'.$i.'file.csv';
+            $competition_select = $api->get_soccerseason_by_id($post_league);
+            $day_of_game = $competition_select->payload->currentMatchday;
+            $fixture_match = $api->get_fixtures_for_export($_POST['export_league'][$i], $day_of_game);
+
+            foreach ($fixture_match->fixtures as $fixture) {
+                $date_formated = explode('T', $fixture->date);
+                $list = array(
+                    $fixture->homeTeamName,
+                    $fixture->result->goalsHomeTeam,
+                    $date_formated[0],
+                    $fixture->awayTeamName,
+                    $fixture->result->goalsAwayTeam
+                );
+                fputcsv($fp, $list);
+            }
+            fclose($fp);
+            $i ++;
+        }
+        $zip = new ZipArchive;
+        $filename = WP_PLUGIN_DIR.'/BrAc/export.zip';
+
+        $res = $zip->open('export.zip',ZipArchive::CREATE);
+        if ($res === TRUE) {
+            foreach ($files_to_zip as $f){
+                $zip->addFile($f);
+            }
+            $zip->close();
+            foreach ($files_to_zip as $f){
+                unlink($f);
+            }
+        }
+
+    }
 
     /**
      * Display a custom menu page
@@ -47,6 +106,7 @@ if (is_admin()) {
             </form>
             <h1>Export results as CSV</h1>
             <form method="post" name="leagueForm" action="">
+            <input type="hidden" name="action" value="download_zip">
                 <?php
                 $api = new FootballData();
                 $soccerseason = $api->get_soccer_season();
@@ -57,59 +117,6 @@ if (is_admin()) {
             <button type="submit" name="action">Export</button>
 
         <?php
-        }
-        if(isset($_POST['selectChoice'])) {
-            update_option('league_id',$_POST['selectChoice']);
-            echo '<h3>League registered !</h3>';
-        }
-        if(isset($_POST['Token'])) {
-            update_option('token_id',$_POST['Token']);
-            echo '<h3>Token successfully sent</h3>'.get_option('token_id');
-        }
-        if (isset($_POST['export_league'])) {
-            $i=0;
-            $post_leagues = $_POST['export_league'];
-            $api = new FootballData();
-
-            $files_to_zip = array();
-
-            foreach ( $post_leagues as $post_league ) {
-                $fp = fopen(WP_PLUGIN_DIR.'/BrAc/'.$i.'file.csv', 'w');
-                $files_to_zip[] = WP_PLUGIN_DIR.'/BrAc/'.$i.'file.csv';
-                $competition_select = $api->get_soccerseason_by_id($post_league);
-                $day_of_game = $competition_select->payload->currentMatchday;
-                $fixture_match = $api->get_fixtures_for_export($_POST['export_league'][$i], $day_of_game);
-
-                foreach ($fixture_match->fixtures as $fixture) {
-                    $date_formated = explode('T', $fixture->date);
-                    $list = array(
-                        $fixture->homeTeamName,
-                        $fixture->result->goalsHomeTeam,
-                        $date_formated[0],
-                        $fixture->awayTeamName,
-                        $fixture->result->goalsAwayTeam
-                    );
-                    fputcsv($fp, $list);
-                }
-                fclose($fp);
-                $i ++;
-            }
-            $zip = new ZipArchive;
-            $filename = WP_PLUGIN_DIR.'/BrAc/export.zip';
-
-            $res = $zip->open($filename, ZipArchive::CREATE);
-            if ($res === TRUE) {
-                foreach ($files_to_zip as $f){
-                    $zip->addFile($f);
-                }
-                $zip->close();
-                echo 'ok';
-                foreach ($files_to_zip as $f){
-                    unlink($f);
-                }
-                } else {
-                    echo 'echec';
-                }
         }
     }
 }
