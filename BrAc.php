@@ -55,9 +55,9 @@ class wpb_widget extends WP_Widget {
         <div class="container">
             <table style="margin-top: 20px;">
                 <tr>
-                    <td style="text-align: center;">Home</td>
-                    <td style="text-align: center;">Date</td>
-                    <td style="text-align: center;">Visitors</td>
+                    <td style="text-align: center;"><?php _e('Home','BrAc'); ?></td>
+                    <td style="text-align: center;"><?php _e('Date','BrAc'); ?></td>
+                    <td style="text-align: center;"><?php _e('Visitors','BrAc'); ?></td>
                 </tr>
                 <?php foreach ($fixture_match->fixtures as $fixture) {
                     $date_formated = explode('T', $fixture->date);?>

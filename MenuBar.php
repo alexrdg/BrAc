@@ -5,6 +5,12 @@
  * Date: 17/10/2016
  * Time: 17:39
  */
+add_action('init','init_translation');
+
+function init_translation() {
+    load_plugin_textdomain('BrAc',false,basename(dirname(__FILE__)).'/languages');
+}
+
 if (is_admin()) {
     add_action( 'admin_menu', 'wpdocs_register_my_custom_menu_page' );
     function wpdocs_register_my_custom_menu_page(){
@@ -20,12 +26,12 @@ if (is_admin()) {
 
     if(isset($_POST['selectChoice'])) {
         update_option('league_id',$_POST['selectChoice']);
-        echo '<h3>League registered !</h3>';
+        _e("<h1>"."League registered !"."</h1>","BrAc");
     }
 
     if(isset($_POST['Token'])) {
         update_option('token_id',$_POST['Token']);
-        echo '<h3>Token successfully sent</h3>'.get_option('token_id');
+        _e('Token registered !','BrAc');
     }
 
 
@@ -84,42 +90,43 @@ if (is_admin()) {
      * Display a custom menu page
      */
     function my_custom_menu_page(){ ?>
-            <h1>FIRST, ENTER YOUR TOKEN</h1>
-            <i>can be generated <a href="http://api.football-data.org/register">here</a></i><br>
-            <form method="post" name="" action="" onsubmit="return confirm('Do you really want to update the Token ?');">
-                <input type="text" name="Token" placeholder="Enter Token here"></input>
-                <button type="submit" name="action">Submit</button>
-                <?php if (!empty(get_option('token_id'))){
-                echo '<br>Your Token is: '.get_option('token_id');
-        }?>
+            <h1><?php _e('FIRST ENTER YOUR TOKEN','BrAc'); ?></h1>
+            <i><?php _e('can be generated','BrAc'); ?> <a href="http://api.football-data.org/register"><?php _e('here','BrAc'); ?></a></i><br>
+            <form method="post" name="" action="" onsubmit="return confirm(<?php _e('Do you really want to update the Token ?','BrAc')?>);">
+                <input type="text" name="Token" placeholder="<?php _e('Enter Token here','BrAc'); ?>"></input>
+                <button type="submit" name="action"><?php _e('Submit','BrAc'); ?></button>
+                <?php if (!empty(get_option('token_id'))){ ?> <br><?php
+                echo _e('Your Token is: ','BrAc').get_option('token_id');
+        ?>
         </form>
-        <?php if (!empty(get_option('token_id'))) {?>
-            <h1 style="margin-top: 150px;">Choose your league</h1>
-            <form method="post" name="leagueForm" action="">
-                <select name="selectChoice">
+            <?php if (!empty(get_option('token_id'))) {?>
+                <h1 style="margin-top: 150px;"><?php _e('Choose your league','BrAc');?></h1>
+                <form method="post" name="leagueForm" action="">
+                    <select name="selectChoice">
+                        <?php
+                        $api = new FootballData();
+                        // fetch and dump summary data for premier league' season 2015/16
+                        $soccerseason = $api->get_soccer_season();
+                        foreach ($soccerseason->payload as $fixture) { ?>
+                            <option name="id" value="<? echo $fixture->id;?>"><?php echo $fixture->caption; ?></option>
+                        <?php } ?>
+                    </select>
+                    <button type="submit" name="action"><?php _e('Submit','BrAc'); ?></button>
+                </form>
+                <h1 style="margin-top: 150px;"><?php _e('Export as CSV','BrAc'); ?></h1>
+                <form method="post" name="leagueForm" action="">
+                <input type="hidden" name="action" value="download_zip">
                     <?php
                     $api = new FootballData();
-                    // fetch and dump summary data for premier league' season 2015/16
                     $soccerseason = $api->get_soccer_season();
+
                     foreach ($soccerseason->payload as $fixture) { ?>
-                        <option name="id" value="<? echo $fixture->id;?>"><?php echo $fixture->caption; ?></option>
-                    <?php } ?>
-                </select>
-                <button type="submit" name="action">Submit</button>
-            </form>
-            <h1 style="margin-top: 150px;">Export results as CSV</h1>
-            <form method="post" name="leagueForm" action="">
-            <input type="hidden" name="action" value="download_zip">
-                <?php
-                $api = new FootballData();
-                $soccerseason = $api->get_soccer_season();
+                        <label><input type="checkbox" name="export_league[]" value="<? echo $fixture->id;?>"><?php echo $fixture->caption; ?></label><br>
+                    <?php } ;?>
+                <button type="submit" name="action"><?php _e('Export','BrAc'); ?></button>
 
-                foreach ($soccerseason->payload as $fixture) { ?>
-                    <label><input type="checkbox" name="export_league[]" value="<? echo $fixture->id;?>"><?php echo $fixture->caption; ?></label><br>
-                <?php } ;?>
-            <button type="submit" name="action">Export</button>
-
-        <?php
+            <?php
+            }
         }
     }
 }
