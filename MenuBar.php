@@ -38,8 +38,8 @@ if (is_admin()) {
         $files_to_zip = array();
 
         foreach ( $post_leagues as $post_league ) {
-            $fp = fopen(WP_PLUGIN_DIR.'/BrAc/'.$i.'file.csv', 'w');
-            $files_to_zip[] = WP_PLUGIN_DIR.'/BrAc/'.$i.'file.csv';
+            $fp = fopen($i.'file.csv', 'w');
+            $files_to_zip[] = $i.'file.csv';
             $competition_select = $api->get_soccerseason_by_id($post_league);
             $day_of_game = $competition_select->payload->currentMatchday;
             $fixture_match = $api->get_fixtures_for_export($_POST['export_league'][$i], $day_of_game);
@@ -59,7 +59,7 @@ if (is_admin()) {
             $i ++;
         }
         $zip = new ZipArchive;
-        $filename = WP_PLUGIN_DIR.'/BrAc/export.zip';
+        $filename = 'export.zip';
 
         $res = $zip->open($filename,ZipArchive::CREATE);
         if ($res === TRUE) {
